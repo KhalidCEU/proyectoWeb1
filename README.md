@@ -4,7 +4,11 @@ This repository is dedicated to the 'Sistemas Web I' course project.
 
 **Group members**: Khalid Belkassmi E.H., Enrique Collado Muñoz, Jesús Marín Sánchez, Pablo Garay Pérez
 
-## About this project
+## About this project 🤔
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ea40fdb5-06b4-44ce-abe2-2a7187e7894d" style="width: 30%">
+</div>
 
 **Project Title**: SneakeRate
 
@@ -14,7 +18,7 @@ This repository is dedicated to the 'Sistemas Web I' course project.
 
 **The Chosen Stack**: React with NextJS (uses NodeJS), MongoDB as the database, with Typescript as the language and Tailwind as the CSS framework.
 
-## Usage
+## Usage 🕹
 
 First, **install dependencies**:
 
@@ -52,6 +56,6 @@ pnpm build
 bun run build
 ```
 
-## License
+## License 📃
 
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
