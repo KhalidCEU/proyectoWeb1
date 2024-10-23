@@ -14,7 +14,7 @@ This repository is dedicated to the 'Sistemas Web I' course project.
 
 **The goal**: Create a **full-stack** web app using JS/TS, HTML, CSS or frameworks based on them, along with Node.js for the backend. The app must have various roles used limiting some permissions and access to certain pages. See the **[docs](/docs)** for more information.
 
-**What we created**: A web application that allows sneaker enthusiasts to explore and evaluate a variety of sneakers. The platform enables users to **rate and review sneakers**, as well as **view ratings** from others, offering insights into popular choices. Rather than functioning as a marketplace, SneakeRate serves as **a resource for gathering authentic opinions and information about different sneakers**.
+**What are we building**: A web application that allows sneaker enthusiasts to explore and evaluate a variety of sneakers. The platform enables users to **rate and review sneakers**, as well as **view ratings** from others, offering insights into popular choices. Rather than functioning as a marketplace, SneakeRate serves as **a resource for gathering authentic opinions and information about different sneakers**.
 
 **The Chosen Stack**: React with NextJS (uses NodeJS), MongoDB as the database, with Typescript as the language and Tailwind as the CSS framework.
 
