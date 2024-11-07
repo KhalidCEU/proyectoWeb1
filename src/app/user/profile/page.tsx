@@ -18,7 +18,6 @@ export default function Profile() {
 
     return (
         <div className="container mx-auto">
-            {/* <p className="text-2xl ml-20">Profile</p> */}
             <div className="flex flex-col items-center mt-10">
                 <Image
                         className='mb-4'

@@ -1,12 +1,11 @@
 
 
 import React from 'react';
-import { Typography } from '@mui/material';
 
 export default function Settings() {
     return (
         <div>
-            <Typography variant="h5">Settings</Typography>
+            <p className="text-2xl ml-20">Settings</p>
         </div>
     );
 };
