@@ -1,12 +1,29 @@
 
 
 import React from 'react';
-import { Typography } from '@mui/material';
+import ProductCard from '@/components/ProductCard';
+import WishlistTestData from '@/testJsons/wishlist.json'
 
 export default function Wishlist() {
+    const testData = WishlistTestData.wishlist;
+
     return (
-        <div>
-            <Typography variant="h5">Wishlist</Typography>
+        <div className="container mx-auto">
+            <p className="text-2xl ml-20">My Wishlist</p>
+            <div className="px-4 sm:px-6 lg:px-8 my-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ml-20">
+                    {testData.map((product) => (
+                    <ProductCard
+                        key={product.id}
+                        id={product.id}
+                        imageUrl={product.imageUrl}
+                        name={product.name}
+                        description={product.description}
+                        rating={product.rating}
+                    />
+                    ))}
+                </div>
+            </div>
         </div>
-    );
+    )
 };
