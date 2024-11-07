@@ -67,6 +67,7 @@ const UserSettings = () => {
       </button>
     </div>
   );
+
 };
 
 export default UserSettings;

@@ -1,21 +1,23 @@
 "use client"
 
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import {
-    Favorite,
-    PersonOutlineOutlined,
-    Settings,
-    Logout
-} from '@mui/icons-material';
-import { pink, grey } from '@mui/material/colors';
 import Link from 'next/link';
+import { pink, grey } from '@mui/material/colors';
+import {
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  Divider,
+  IconButton,
+  Tooltip
+} from '@mui/material';
+import {
+  Favorite,
+  PersonOutlineOutlined,
+  Settings,
+  Logout
+} from '@mui/icons-material';
 
 export default function AccountMenu() {
   const [popoverAnchor, setPopoverAnchor] = React.useState<null | HTMLElement>(null);
