@@ -1,0 +1,22 @@
+{
+    "product": {
+        "id": 1,
+        "name": "Nike Vapormax",
+        "description": "A diferencia de los anteriores modelos de Air Max que rellenaban la suela con la máxima cantidad de aire posible, las VaporMax se centran en emplear menos aire y de manera más eficiente. Al utilizar mapas de presión del pie, los diseñadores fueron capaces de calcular la cantidad exacta de aire y los puntos en los que debe insertarse para añadir sujeción a la pisada del corredor. En la línea de este tipo de tecnología, el equipo ideó un patrón que funcionara como si se tratase de un diseño formado por piezas pequeñas. En cada pisada, cada pieza ejerce presión sobre la unidad Air para aumentar la presión",
+        "rating": 4.5,
+        "imageUrl": "../nike_vapormax.png",
+        "isLiked": true,
+        "estimatedPrice": {
+            "minPrice": 300,
+            "maxPrice": 500
+        },
+        "comments": [{
+            "author": "loremipsum",
+            "comment": "Lorem ipsum dolor sit amet et delectus 😅"
+        },
+        {
+            "author": "johndoe",
+            "comment": "amet et delectus ! ✅"
+        }]
+    }
+}
