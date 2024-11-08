@@ -1,0 +1,44 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "imageUrl": "/users/profile8.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Jane Doe",
+        "imageUrl": "/users/profile3.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Robert Brown",
+        "imageUrl": "/users/profile2.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Mary Smith",
+        "imageUrl": "/users/profile5.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Charles Miller",
+        "imageUrl": "/users/profile4.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Patricia Brown",
+        "imageUrl": "/users/profile6.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Thomas Garcia",
+        "imageUrl": "/users/profile7.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Daniela Martinez",
+        "imageUrl": "/users/profile1.jpg"
+      }
+    ]
+  }
