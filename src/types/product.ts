@@ -5,4 +5,5 @@ export type ProductCardProps = {
     description: string;
     imageUrl: string;
     rating: number;
+    editable?: boolean;
 }
