@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Nike Vapormax",
+      "description": "Lightweight running shoes with exceptional cushioning.",
+      "rating": 4.5,
+      "imageUrl": "../nike_vapormax.png"
+    },
+    {
+      "id": 2,
+      "name": "Adidas Ultraboost",
+      "description": "High-performance running shoes with energy-returning cushioning.",
+      "rating": 3.5,
+      "imageUrl": "../adidas_ultraboost.png"
+    },
+    {
+      "id": 3,
+      "name": "Puma RS-X",
+      "description": "Chunky sneakers with bold design and comfortable fit.",
+      "rating": 4.3,
+      "imageUrl": "../puma_rsx.png"
+    },
+    {
+      "id": 4,
+      "name": "New Balance 990",
+      "description": "Classic running shoes known for their comfort and durability.",
+      "rating": 4.6,
+      "imageUrl": "../newbalance_990.png"
+    }
+  ]
+}
