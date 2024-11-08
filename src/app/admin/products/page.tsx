@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
 import testDataFile from "@/testJsons/items.json";
 import SearchBar from "@/components/SearchBar";
-import { useState, useEffect } from "react";
 
 export default function AdminProducts() {
     const testData = testDataFile.items;
