@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,7 +33,7 @@ const Navbar = () => {
                     {/* <div className="-mr-2 flex md:hidden">
                     </div> */}
                     <div className="flex items-center ml-4 space-x-4">
-                        <SearchBar/>
+                        <SearchBar onSearch={() => {}} />
                         <AccountMenu />
                     </div>
 

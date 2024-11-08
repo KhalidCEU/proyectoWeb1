@@ -2,8 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import { Rating } from "@mui/material";
 import { ProductCardProps } from '@/types';
+import {
+    Edit as EditIcon,
+    Delete as DeleteIcon
+} from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
-const ProductCard = ({ id, name, description, imageUrl, rating }: ProductCardProps) => {
+const ProductCard = ({ id, name, description, imageUrl, rating, editable = false }: ProductCardProps) => {
     return (
         <Link href={`/product/${id}`}>
             <div className="w-full p-4">
@@ -21,11 +26,22 @@ const ProductCard = ({ id, name, description, imageUrl, rating }: ProductCardPro
                             <p className="text-gray-700 mb-8">
                                 {description}
                             </p>
-                            <div className="flex justify-center">
-                                <Rating
-                                    value={rating} precision={0.5} readOnly
-                                />
-                            </div>
+                            {!editable ? (
+                                <div className="flex justify-center">
+                                    <Rating
+                                        value={rating} precision={0.5} readOnly
+                                    />
+                                </div>
+                            ) : (
+                                <div className="flex justify-center space-x-2">
+                                    <IconButton aria-label="edit">
+                                        <EditIcon className="text-black"/>
+                                    </IconButton>
+                                    <IconButton aria-label="delete">
+                                        <DeleteIcon className="text-red-500"/>
+                                    </IconButton>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
