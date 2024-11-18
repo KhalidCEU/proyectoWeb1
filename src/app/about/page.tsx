@@ -9,7 +9,7 @@ export default function About() {
             </div>
 
             <div className='flex mx-auto px-32 mt-12'>
-                <p className="text-black text-justify text-xl">
+                <div className="text-black text-justify text-xl">
                     <span className='text-green-500'>SneakeRate </span>
                     is your go-to web application designed to connect sneaker enthusiasts with the most comprehensive and reliable information in the market.
                     Our platform empowers users to evaluate and review a vast catalog of sneakers, making it easier to choose the perfect pair for every individual.
@@ -40,10 +40,12 @@ export default function About() {
 
                     <br/>
 
-                    At SneakeRate, we believe that every sneaker purchase should be informed and satisfying. Join us in celebrating the culture of sneakers and
-                    find your next favorite pair today! This text captures the essence of your application, highlighting its purpose, motivation, and offerings
-                    in a clear and engaging manner. Feel free to adjust any sections to better fit your brand's voice or specific features!
-                </p>
+                    <p className='mb-32'>
+                        At SneakeRate, we believe that every sneaker purchase should be informed and satisfying. Join us in celebrating the culture of sneakers and
+                        find your next favorite pair today! This text captures the essence of your application, highlighting its purpose, motivation, and offerings
+                        in a clear and engaging manner. Feel free to adjust any sections to better fit your brand's voice or specific features!
+                    </p>
+                </div>
             </div>
         </div>
     );
