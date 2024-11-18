@@ -26,9 +26,11 @@ export const login: AsyncRequestHandler = async (req, res) => {
 
         const token = jwt
             .sign(
-                { userId: user._id }, process.env.JWT_SECRET as string,
+                { userId: user._id, role: user.role}, process.env.JWT_SECRET as string,
                 { expiresIn: '1h',}
             );
+
+        res.setHeader('Set-Cookie', `auth_token=${token}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Lax;`);
 
         res.json({
             user,
@@ -42,7 +44,7 @@ export const login: AsyncRequestHandler = async (req, res) => {
 };
 
 export const register: AsyncRequestHandler = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, confirmedPassword } = req.body;
     const SALT_ROUNDS = 10;
     const JWT_SECRET= process.env.JWT_SECRET
 
@@ -55,13 +57,19 @@ export const register: AsyncRequestHandler = async (req, res) => {
                 .json({ message: 'Username already taken', status: 'failure' });
         }
 
+        if (password !== confirmedPassword) {
+            return res
+                .status(400)
+                .json({ message: 'Passwords do not match', status: 'failure' });
+        }
+
         const hashedPassword = await hash(password, SALT_ROUNDS);
         const newUser = new User({ username, password: hashedPassword });
         await newUser.save();
 
         const token = jwt
             .sign(
-                { userId: newUser._id },
+                { userId: newUser._id, role: newUser.role },
                 JWT_SECRET as string,
                 { expiresIn: '1h', }
             );
@@ -76,5 +84,21 @@ export const register: AsyncRequestHandler = async (req, res) => {
         return res
             .status(500)
             .json({ message: 'Server error' });
+    }
+};
+
+export const logout: AsyncRequestHandler = async (req, res) => {
+    try {
+        res.setHeader('Set-Cookie', `auth_token=; HttpOnly; Path=/; Max-Age=0; Secure; SameSite=Lax;`);
+        return res
+            .status(200)
+            .json({ message: 'Logout successful', status: 'success' });
+
+    } catch (error) {
+        console.error("Error logging out", error);
+
+        return res
+            .status(500)
+            .json({ message: 'Logout failer', status: 'failure' });
     }
 };

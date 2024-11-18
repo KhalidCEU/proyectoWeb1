@@ -11,8 +11,15 @@ const port = process.env.PORT || 8080
 
 connectDB();
 
-server.use(cors())
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+server.use(cors(corsOptions))
 server.use(bodyParser.json())
+
+server.use('/static', express.static('public'))
 
 server.use('/api', router)
 

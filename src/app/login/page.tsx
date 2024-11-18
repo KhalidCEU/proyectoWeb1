@@ -1,12 +1,43 @@
-"use client"
+'use client'
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import CustomTextField from '@/components/CustomTextField';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthService } from '@/services';
 
 export default function LoginPage() {
   const [selected, setSelected] = useState("login");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
+
+  const authService = useAuthService();
+  const router = useRouter();
+
+  const handleAuth = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = selected === "login"
+        ? await authService.login(username, password)
+        : await authService.register(username, password, confirmedPassword);
+
+      if (response && response.status === "success") {
+          setIsLoading(false);
+          router.push('/');
+      } else {
+          setError('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('Error on login', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="max-w-md p-8 mx-auto mt-10 border-1 border-black rounded-lg shadow-lg">
@@ -27,20 +58,51 @@ export default function LoginPage() {
 
       {selected == "login" && (
         <>
-          <CustomTextField label="Username" placeholder="@johndoe"/>
-          <CustomTextField label="Password" placeholder="*********" />
-          <Button className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white">
-            Log In
+          <CustomTextField
+            label="Username" placeholder="@johndoe"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <CustomTextField
+            label="Password" placeholder="*********"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            isPassword
+          />
+          <Button
+            className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white"
+            onClick={handleAuth}
+            disabled={isLoading}
+          >
+            { isLoading ? <CircularProgress size={24} color='inherit'/> : 'Log In' }
           </Button>
         </>
       )}
 
       {selected == "signup" && (
         <>
-          <CustomTextField label="Username" placeholder="@johndoe"/>
-          <CustomTextField label="Password" placeholder="*********" />
-          <CustomTextField label="Confirm Password" placeholder="*********" />
-          <Button className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white">
+          <CustomTextField
+            label="Username" placeholder="@johndoe"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <CustomTextField
+            label="Password" placeholder="*********"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            isPassword
+          />
+          <CustomTextField
+            label="Confirm Password" placeholder="*********"
+            value={confirmedPassword}
+            onChange={(e) => setConfirmedPassword(e.target.value)}
+            isPassword
+          />
+          <Button
+            className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white"
+            onClick={handleAuth}
+            disabled={isLoading}
+          >
             Sign Up
           </Button>
         </>
