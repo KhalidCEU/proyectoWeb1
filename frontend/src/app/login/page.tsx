@@ -70,7 +70,8 @@ export default function LoginPage() {
             isPassword
           />
           <Button
-            className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white"
+            className="w-full font-bold rounded-md py-3 mt-6 border-2 border-solid border-green-400
+                    bg-green-400 text-white hover:bg-green-50 hover:text-green-400"
             onClick={handleAuth}
             disabled={isLoading}
           >
@@ -99,7 +100,8 @@ export default function LoginPage() {
             isPassword
           />
           <Button
-            className="w-full font-bold rounded-md py-3 mt-6 bg-green-400 text-white"
+            className="w-full font-bold rounded-md py-3 mt-6 border-2 border-solid border-green-400
+                    bg-green-400 text-white hover:bg-green-50 hover:text-green-400"
             onClick={handleAuth}
             disabled={isLoading}
           >
