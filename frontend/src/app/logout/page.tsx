@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CircularProgress }  from '@mui/material';
 import { useAuthService } from '@/services';
+import { toast } from 'sonner';
 
 const authService = useAuthService();
 
@@ -12,10 +13,12 @@ export default function Logout () {
 
     const logout = async () => {
         try {
-            await authService.logout();
+            const response = await authService.logout();
+            toast.success(response.message);
             router.push('/login');
-        } catch (error) {
-            console.error('Logout failed: ', error);
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
         }
     };
 
