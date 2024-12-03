@@ -15,7 +15,11 @@ export interface Product {
     _id: string;
     name: string;
     description: string;
-    rating: number;
+    ratings: {
+        userId: string;
+        rating: number;
+    }[];
+    averageRating: number;
     imageUrl: string;
     isFavorite: boolean;
     estimatedPrice: EstimatedPrice;

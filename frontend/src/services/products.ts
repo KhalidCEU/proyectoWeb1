@@ -16,10 +16,9 @@ export function useProductsService() {
         }
     }
 
-
     const getProductById = async (productId: string ) => {
         try {
-            const response = await axios.post(`${url}/products/${productId}`,
+            const response = await axios.get(`${url}/products/${productId}`,
                 { withCredentials: true }
             );
             return response.data;
@@ -28,5 +27,17 @@ export function useProductsService() {
         }
     }
 
-    return { getProducts, getProductById };
+    const rateProduct = async (productId: string, userId: string, ratingValue: number) => {
+        try {
+            const response = await axios.post(`${url}/products/${productId}/rate`,
+                { userId: userId, rating: ratingValue },
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return { getProducts, getProductById, rateProduct};
 }
