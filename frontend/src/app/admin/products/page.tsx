@@ -3,16 +3,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
-import testDataFile from "@/testJsons/items.json";
 import SearchBar from "@/components/SearchBar";
 import { Button } from "@mui/material";
 import CreateProductModal from "@/components/admin/CreateProductModal";
-import { useProductsService } from "@/services";
+import { useAdminProductsService } from "@/services";
 import { Product } from "@/app/types/Product";
 import { toast } from "sonner";
 
 export default function AdminProducts() {
-    const testData = testDataFile.items;
     const [products, setProducts] = useState<Product[]>([]);
     const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
     const [searchedWord, setSearchedWord] = useState('');
@@ -20,7 +18,7 @@ export default function AdminProducts() {
     const [isModalOpen, setOpenModal] = useState(false);
     const [isEditMode, setEditMode] = useState(false);
 
-    const productsService = useProductsService();
+    const productsService = useAdminProductsService();
 
     useEffect(() => {
         loadProducts();

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import axios from 'axios';
 import { Product } from '@/app/types/Product';
 
-export function useProductsService() {
+export function useAdminProductsService() {
     const url = process.env.NEXT_PUBLIC_API_URL;
 
     const getProducts = async () => {
