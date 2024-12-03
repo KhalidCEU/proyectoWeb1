@@ -34,8 +34,9 @@ export const login: AsyncRequestHandler = async (req, res) => {
 
         res.json({
             user,
+            token,
             status: 'success',
-            token
+            message:'Logged in successfully',
         });
     } catch (error) {
         console.error('Login error:', error);
@@ -76,7 +77,12 @@ export const register: AsyncRequestHandler = async (req, res) => {
 
         return res
             .status(201)
-            .json({ userId: newUser._id, status: 'success', token});
+            .json({
+                userId: newUser._id,
+                status: 'success',
+                message:'Registered successfully',
+                token
+            });
 
     } catch (error) {
         console.error('Registration error:', error);
@@ -95,10 +101,10 @@ export const logout: AsyncRequestHandler = async (req, res) => {
             .json({ message: 'Logout successful', status: 'success' });
 
     } catch (error) {
-        console.error("Error logging out", error);
+        console.error("Logout error", error);
 
         return res
             .status(500)
-            .json({ message: 'Logout failer', status: 'failure' });
+            .json({ message: 'Server error' });
     }
 };

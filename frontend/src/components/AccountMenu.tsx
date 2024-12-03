@@ -32,8 +32,7 @@ export default function AccountMenu() {
   };
 
   return (
-    <React.Fragment>
-
+    <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="My Account">
           <IconButton
@@ -53,7 +52,6 @@ export default function AccountMenu() {
         anchorEl={popoverAnchor}
         id="account-menu"
         open={open}
-        onClose={handleClose}
         onClick={handleClose}
         slotProps={{
           paper: {
@@ -86,7 +84,8 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+
+        <MenuItem>
           <Link href="/user/profile">
             <PersonOutlineOutlined sx={{ mr: 1 }} /> My account
           </Link>
@@ -94,7 +93,7 @@ export default function AccountMenu() {
 
         <Divider />
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
             <Link href="/user/wishlist">
               <Favorite sx= {{ color: pink[500], mr: 1 }}/> My Wishlist
             </Link>
@@ -102,13 +101,13 @@ export default function AccountMenu() {
 
         <Divider />
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <Link href="/user/settings">
               <Settings fontSize="small" sx={{ mr: 1, color: grey[700] }}/> Settings
           </Link>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <Link href="/logout">
             <Logout fontSize="small" sx={{ mr: 1, color: grey[700] }}/> Logout
           </Link>
@@ -116,6 +115,6 @@ export default function AccountMenu() {
 
       </Menu>
 
-    </React.Fragment>
-  );
+      </>
+    );
 }
