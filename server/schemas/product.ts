@@ -3,7 +3,11 @@ import mongoose from "mongoose"
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, default: '', required: true},
-    rating: { type: Number, min: 0, max: 5, default: 0 },
+    ratings: [{
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        rating: { type: Number, min: 0, max: 5 }
+    }],
+    averageRating: { type: Number, default: 0 },
     imageUrl: { type: String, default: '' },
     isFavorite: { type: Boolean, default: false },
     estimatedPrice: {

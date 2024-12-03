@@ -8,7 +8,8 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
     _id: productData?._id || '',
     name: productData?.name || '',
     description: productData?.description || '',
-    rating: productData?.rating || 0,
+    ratings: productData?.ratings || [],
+    averageRating: productData?.averageRating || 0,
     imageUrl: productData?.imageUrl || '',
     isFavorite: productData?.isFavorite || false,
     estimatedPrice: {

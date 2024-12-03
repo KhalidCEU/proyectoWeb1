@@ -49,7 +49,7 @@ const ProductCard = ({ _id, productData, editable = false,
                         {!editable ? (
                             <div className="flex justify-center">
                                 <Rating
-                                    value={productData.rating} precision={0.5} readOnly
+                                    value={productData.averageRating} precision={0.5} readOnly
                                 />
                             </div>
                         ) : (

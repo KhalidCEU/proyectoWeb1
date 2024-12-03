@@ -22,6 +22,27 @@ export const getProducts: AsyncRequestHandler = async (req, res) => {
     }
 }
 
+export const getProduct: AsyncRequestHandler = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const product = await Product.findById(productId)
+
+        return res
+            .status(200)
+            .json({
+                items: product,
+                message: 'Product retrieved successfully',
+                status: 'success'
+            });
+
+    } catch (error) {
+        console.error('Product fetching error: ', error);
+        return res
+            .status(500)
+            .json({ message: 'Error getting product.', status: 'failure'});
+    }
+}
+
 export const createProduct: AsyncRequestHandler = async (req, res) => {
     const { name, description, rating, imageUrl, isFavorite,
             estimatedPrice, comments } = req.body;
@@ -41,6 +62,45 @@ export const createProduct: AsyncRequestHandler = async (req, res) => {
         return res
             .status(500)
             .json({ message: 'Product creation failed.', status: 'failure'});
+    }
+}
+
+export const rateProduct: AsyncRequestHandler = async (req, res) => {
+    const { productId } = req.params;
+    const { userId, rating } = req.body;
+
+    try {
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res
+                .status(404)
+                .json({ message: "Product not found", status: 'failure' });
+        }
+
+        const existingRatingIndex = product.ratings.findIndex(r => (r.userId?.toString() ?? '') === userId);
+
+        if (existingRatingIndex !== -1) {
+            product.ratings[existingRatingIndex].rating = rating;
+        } else {
+            product.ratings.push({ userId, rating });
+        }
+
+        const totalRatings = product.ratings.reduce((acc, r) => acc + (r.rating ?? 0), 0);
+        product.averageRating = totalRatings / product.ratings.length;
+
+        await product.save();
+        const updatedProduct = await Product.findById(productId);
+
+        return res
+            .status(200)
+            .json({ item: updatedProduct, message: "Product rating updated successfully", status: 'success' });
+
+    } catch (error) {
+        console.error('Product rating update error: ', error);
+        return res
+            .status(500)
+            .json({ message: 'Product rating update failed.', status: 'failure' });
     }
 }
 
@@ -84,7 +144,6 @@ export const updateProduct: AsyncRequestHandler = async (req, res) => {
             .json({ message: 'Product update failed.', status: 'failure'});
     }
 }
-
 
 export const deleteProduct: AsyncRequestHandler = async (req, res) => {
     const { productId } = req.params;
