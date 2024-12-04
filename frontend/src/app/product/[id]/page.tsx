@@ -53,6 +53,24 @@ const ProductPage = () => {
         }
     }
 
+    const handleFavorite = async (productId: string) => {
+        try {
+            const response = await productsService.likeProduct(productId);
+            console.log("Handle favorite response: ", response);
+            toast.success(response.message);
+            setProductData(prevData => {
+                if (!prevData) return prevData;
+                return {
+                    ...prevData,
+                    isFavorite: !prevData.isFavorite
+                };
+            });
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
+        }
+    }
+
     useEffect(() => {
         if (id && !Array.isArray(id)) {
             loadProduct(id);
@@ -90,7 +108,7 @@ const ProductPage = () => {
                         }}
                     />
                     <p className="text-gray-500 font-semibold text-xs mb-4">{productData.averageRating} / 5</p>
-                    <IconButton>
+                    <IconButton onClick={() => handleFavorite(productData._id)}>
                         {productData.isFavorite ?
                             <Favorite sx={{ color: 'red'}}/>
                             :

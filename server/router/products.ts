@@ -5,7 +5,8 @@ import {
     rateProduct,
     deleteProduct,
     getProducts,
-    getProduct
+    getProduct,
+    likeProduct
 } from '../controllers/products';
 
 const productsRouter = express.Router();
@@ -15,6 +16,7 @@ productsRouter.get('/:productId', getProduct);
 
 productsRouter.post('/', createProduct);
 productsRouter.post('/:productId/rate', rateProduct);
+productsRouter.post('/:productId/like', likeProduct);
 
 
 productsRouter.put('/:productId', updateProduct);
