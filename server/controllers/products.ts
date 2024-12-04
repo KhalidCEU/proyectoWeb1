@@ -1,6 +1,8 @@
 import 'dotenv';
-import { Product } from '../schemas/product';
+import { Product, Favorite } from "../schemas";
 import { AsyncRequestHandler } from '../types/requests';
+import { getDecodedToken } from '../utils/jwtUtils';
+
 
 export const getProducts: AsyncRequestHandler = async (req, res) => {
     try {
@@ -25,7 +27,19 @@ export const getProducts: AsyncRequestHandler = async (req, res) => {
 export const getProduct: AsyncRequestHandler = async (req, res) => {
     try {
         const { productId } = req.params;
-        const product = await Product.findById(productId)
+        const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+        const userId = decodedAuthToken?.userId;
+
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found', status: 'failure' });
+        }
+
+        if(userId) {
+            const favorite = await Favorite.findOne({ userId, productId });
+            product.isFavorite = !!favorite;
+        }
 
         return res
             .status(200)
@@ -104,6 +118,40 @@ export const rateProduct: AsyncRequestHandler = async (req, res) => {
     }
 }
 
+export const likeProduct: AsyncRequestHandler = async (req, res) => {
+    const { productId } = req.params;
+    const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+
+    if (!decodedAuthToken || !decodedAuthToken.userId) {
+        return res.status(401).json({ message: "Unauthorized", status: 'failure' });
+    }
+
+    const userId = decodedAuthToken.userId;
+
+    try {
+        const existingFavorite = await Favorite.findOne({ userId, productId });
+
+        if (existingFavorite) {
+            await Favorite.deleteOne({ userId, productId });
+            return res
+                .status(200)
+                .json({ message: "Product removed from favorites", status: 'success' });
+        } else {
+            await Favorite.create({ userId, productId });
+            return res
+                .status(201)
+                .json({ message: "Product added to favorites", status: 'success' });
+        }
+
+    } catch (error) {
+        console.error('Error handling favorite: ', error);
+
+        return res
+            .status(500)
+            .json({ message: 'Adding the product to favorites failed.', status: 'failure'});
+    }
+}
+
 export const updateProduct: AsyncRequestHandler = async (req, res) => {
     const { productId } = req.params;
 
@@ -164,9 +212,9 @@ export const deleteProduct: AsyncRequestHandler = async (req, res) => {
             .json({ message: "Product deleted successfully", status: 'success' });
 
     } catch (error) {
-        console.error('Product deletio error: ', error);
+        console.error('Product deletion error: ', error);
         return res
             .status(500)
-            .json({ message: 'Product deletio failed.', status: 'failure'});
+            .json({ message: 'Product deletion failed.', status: 'failure'});
     }
 }

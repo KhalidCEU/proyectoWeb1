@@ -39,5 +39,16 @@ export function useProductsService() {
         }
     }
 
-    return { getProducts, getProductById, rateProduct};
+    const likeProduct = async (productId: string) => {
+        try {
+            const response = await axios.post(`${url}/products/${productId}/like`, {},
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return { getProducts, getProductById, rateProduct, likeProduct };
 }
