@@ -78,7 +78,6 @@ const ProductPage = () => {
 
     const handleComment = async (comment: string) => {
         try {
-            console.log("Comment here is: ", comment);
             const response = await productsService.commentProduct(productId, comment);
             toast.success(response.message);
 

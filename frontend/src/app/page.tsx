@@ -22,7 +22,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("Products: ", products)
     const filtered = products?.filter((item) =>
         item.name.toLowerCase().includes(searchedWord.toLowerCase())
     );

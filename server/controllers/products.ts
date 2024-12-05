@@ -220,7 +220,7 @@ export const updateProduct: AsyncRequestHandler = async (req, res) => {
                 .status(404)
                 .json({ message: "Product not found", status: 'failure' });
         }
-        console.log("SERVER| Product ID/ ", productId);
+
         const updatedProduct = await Product.findByIdAndUpdate(
             productId,
             {
