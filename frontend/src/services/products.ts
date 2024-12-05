@@ -3,7 +3,6 @@ import 'dotenv/config';
 
 export function useProductsService() {
     const url = process.env.NEXT_PUBLIC_API_URL;
-    // console.log("Api url is: ", url);
 
     const getProducts = async () => {
         try {
@@ -50,5 +49,17 @@ export function useProductsService() {
         }
     }
 
-    return { getProducts, getProductById, rateProduct, likeProduct };
+    const commentProduct = async (productId: string, comment: string) => {
+        try {
+            const response = await axios.post(`${url}/products/${productId}/comment`,
+                { comment: comment},
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (error){
+            throw error;
+        }
+    }
+
+    return { getProducts, getProductById, rateProduct, likeProduct, commentProduct };
 }

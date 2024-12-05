@@ -9,7 +9,6 @@ function decodeToken(token: string) {
   }
 }
 
-
 function getTokenFromCookie(cookie: string) {
     if (!cookie) return "";
 
@@ -18,7 +17,6 @@ function getTokenFromCookie(cookie: string) {
 
     return authToken;
 }
-
 
 export function getDecodedToken(cookie: string) {
     try {
@@ -29,6 +27,3 @@ export function getDecodedToken(cookie: string) {
         console.error("Error getting decoded token from cookies.");
     }
 }
-
-
-
