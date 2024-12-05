@@ -25,7 +25,6 @@ export default function AdminProducts() {
     }, []);
 
     useEffect(() => {
-        console.log("Products: ", products)
         const filtered = products.filter((item) =>
             item?.name.toLowerCase().includes(searchedWord.toLowerCase())
         );
