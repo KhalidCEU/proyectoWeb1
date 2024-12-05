@@ -11,18 +11,24 @@ import CommentsInput from "@/components/CommentsInput";
 import { useProductsService } from "@/services";
 import { toast } from "sonner";
 import { Product } from "@/app/types/Product";
+import { Comment } from "@/app/types/Comment";
 
 
 const ProductPage = () => {
     const [productData, setProductData] = useState<Product>();
+    const [comments, setCommentsData] = useState<Comment[]>([]);
+
     const { id } = useParams();
+    const [productId, setProductId] = useState<string>('');
 
     const productsService = useProductsService();
 
     const loadProduct = async (productId: string ) => {
         try {
             const response = await productsService.getProductById(productId);
-            setProductData(response.items);
+            setProductData(response.item);
+            setCommentsData(response.comments);
+            setProductId(response.item._id);
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
             toast.error(errorMessage);
@@ -56,7 +62,6 @@ const ProductPage = () => {
     const handleFavorite = async (productId: string) => {
         try {
             const response = await productsService.likeProduct(productId);
-            console.log("Handle favorite response: ", response);
             toast.success(response.message);
             setProductData(prevData => {
                 if (!prevData) return prevData;
@@ -65,6 +70,30 @@ const ProductPage = () => {
                     isFavorite: !prevData.isFavorite
                 };
             });
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
+        }
+    }
+
+    const handleComment = async (comment: string) => {
+        try {
+            console.log("Comment here is: ", comment);
+            const response = await productsService.commentProduct(productId, comment);
+            toast.success(response.message);
+
+            const newComment = {
+                _id: response.item._id,
+                productId: response.item.productId,
+                user: {
+                    _id: response.item.user._id,
+                    username: response.item.user.username,
+                },
+                comment: response.item.comment,
+                date: response.item.date
+            };
+
+            setCommentsData(prevComments => [newComment, ...prevComments]);
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
             toast.error(errorMessage);
@@ -126,13 +155,13 @@ const ProductPage = () => {
                     )}
 
                     <p className="mb-16"> {productData.description} </p>
-                    <CommentsInput />
+                    <CommentsInput onSubmit={handleComment}/>
 
                     <div className="flex flex-col items-center mt-20">
-                        {productData.comments && productData.comments.length > 0 ?
-                            productData.comments.map((comment, index) =>
+                        {comments && comments.length > 0 ?
+                            comments.map((comment, index) =>
                                 <p key={index} className="mb-2 w-full max-w-md">
-                                    <span className="font-semibold">@{comment.author}: </span>
+                                    <span className="font-semibold">@{comment.user.username}: </span>
                                     {comment.comment}
                                 </p>
                             ) : (

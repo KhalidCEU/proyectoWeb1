@@ -1,10 +1,5 @@
 // types/Product.ts
-
-export interface Comment {
-    author: string;
-    comment: string;
-    date: Date;
-}
+import { Comment } from "./Comment";
 
 export interface EstimatedPrice {
     minPrice: number;
@@ -24,4 +19,4 @@ export interface Product {
     isFavorite: boolean;
     estimatedPrice: EstimatedPrice;
     comments: Comment[];
-  }
+}

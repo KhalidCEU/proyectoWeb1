@@ -6,7 +6,8 @@ import {
     deleteProduct,
     getProducts,
     getProduct,
-    likeProduct
+    likeProduct,
+    commentProduct
 } from '../controllers/products';
 
 const productsRouter = express.Router();
@@ -17,6 +18,7 @@ productsRouter.get('/:productId', getProduct);
 productsRouter.post('/', createProduct);
 productsRouter.post('/:productId/rate', rateProduct);
 productsRouter.post('/:productId/like', likeProduct);
+productsRouter.post('/:productId/comment', commentProduct);
 
 
 productsRouter.put('/:productId', updateProduct);

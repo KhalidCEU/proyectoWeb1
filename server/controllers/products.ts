@@ -1,5 +1,5 @@
 import 'dotenv';
-import { Product, Favorite } from "../schemas";
+import { Product, Favorite, Comment, User } from "../schemas";
 import { AsyncRequestHandler } from '../types/requests';
 import { getDecodedToken } from '../utils/jwtUtils';
 
@@ -36,6 +36,10 @@ export const getProduct: AsyncRequestHandler = async (req, res) => {
             return res.status(404).json({ message: 'Product not found', status: 'failure' });
         }
 
+        const comments = await Comment.find({ productId }).populate('user')
+            .sort({ date: -1 })
+            .lean();
+
         if(userId) {
             const favorite = await Favorite.findOne({ userId, productId });
             product.isFavorite = !!favorite;
@@ -44,7 +48,8 @@ export const getProduct: AsyncRequestHandler = async (req, res) => {
         return res
             .status(200)
             .json({
-                items: product,
+                item: product,
+                comments: comments,
                 message: 'Product retrieved successfully',
                 status: 'success'
             });
@@ -149,6 +154,55 @@ export const likeProduct: AsyncRequestHandler = async (req, res) => {
         return res
             .status(500)
             .json({ message: 'Adding the product to favorites failed.', status: 'failure'});
+    }
+}
+
+export const commentProduct: AsyncRequestHandler = async (req, res) => {
+    const { productId } = req.params;
+    const { comment } = req.body;
+    const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+
+    if (!decodedAuthToken || !decodedAuthToken.userId) {
+        return res.status(401).json({ message: "Unauthorized", status: 'failure' });
+    }
+
+    const userId = decodedAuthToken.userId;
+
+    if (!comment || comment.trim() === "") {
+        return res.status(400).json({ message: "Comment cannot be empty", status: 'failure' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res
+                .status(404)
+                .json({ message: "User not found", status: 'failure' });
+        }
+
+        const newComment = new Comment({
+            productId,
+            user: {
+                _id: user._id,
+                username: user.username
+            },
+            comment,
+            date: new Date()
+        })
+
+        await newComment.save();
+
+        return res
+            .status(201)
+            .json({ item: newComment, message: 'Comment added succesfully', status: 'success' })
+
+    } catch (error) {
+        console.error('Error adding comment: ', error);
+
+        return res
+            .status(500)
+            .json({ message: 'Error adding comment.', status: 'failure'});
     }
 }
 
