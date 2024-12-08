@@ -1,5 +1,5 @@
 import 'dotenv';
-import { Product, Favorite, Comment, User } from "../schemas";
+import { Product, Favorite, Comment, User, Image } from "../schemas";
 import { AsyncRequestHandler } from '../types/requests';
 import { getDecodedToken } from '../utils/jwtUtils';
 
@@ -257,6 +257,11 @@ export const deleteProduct: AsyncRequestHandler = async (req, res) => {
             return res
                 .status(404)
                 .json({ message: "Product not found", status: 'failure' });
+        }
+
+        if (existingProduct.imageUrl) {
+            const productImageId = existingProduct.imageUrl.trim().split('/').pop();
+            await Image.findByIdAndDelete(productImageId);
         }
 
         await Product.findByIdAndDelete(productId);

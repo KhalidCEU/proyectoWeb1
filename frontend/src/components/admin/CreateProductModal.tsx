@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import { Product } from '@/app/types/Product';
-
+import { useAdminImagesService } from '@/services/admin/images';
 
 const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, productData } : any) => {
   const [formData, setFormData] = useState<Product>({
@@ -19,7 +19,8 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
     comments: productData?.comments || []
   });
 
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const imagesService = useAdminImagesService();
 
   useEffect(() => {
     if (open && productData) {
@@ -48,12 +49,36 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
     });
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault(); // Evitar que refresque la pagina (default behaviour del form)
+  const handleFileChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  let updatedImageUrl = formData.imageUrl;
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault(); // Avoid refreshing the page (form's default behaviour)
+
+    if (selectedFile) {
+      try {
+        const response = await imagesService.uploadProductImage(formData._id || '', selectedFile);
+        updatedImageUrl = response.imageUrl;
+      } catch (error) {
+        console.error('Error uploading image: ', error);
+        return;
+      }
+    }
+
+    const updatedData = {
+      ...formData,
+      imageUrl: updatedImageUrl
+    }
+
     if (formData._id) {
-      handleUpdate(formData._id, formData); // Llama function update con datos del form
+      handleUpdate(formData._id, updatedData); // Call update function with form data
     } else {
-      handleCreate(formData); // Llama function create
+      handleCreate(updatedData); // Call create function
     }
   };
 
@@ -63,6 +88,23 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
     <Typography variant="h6" component="h2" gutterBottom>
 
         {formData._id ? 'Update' : 'Create'} Product
+
+        <input
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          id="file_input"
+          type="file"
+          onChange={handleFileChange}
+          accept="image/*"
+          style={{ display: 'none' }}
+        />
+
+        <label htmlFor="file_input" >
+            <Button
+              component="span"
+              className="block mt-5 px-10 py-2 text-sm font-bold text-white text-center bg-gray-800 hover:bg-gray-700 rounded-md ">
+              {selectedFile ? selectedFile.name : 'Upload Image'}
+            </Button>
+          </label>
 
         </Typography>
         <form onSubmit={handleSubmit}>
