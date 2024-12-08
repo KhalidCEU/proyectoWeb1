@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 import router from './router';
 import connectDB from './config/database';
 
+import cookieParser from 'cookie-parser'
 const server = express()
 const port = process.env.PORT || 8080
 
@@ -18,6 +19,8 @@ const corsOptions = {
 
 server.use(cors(corsOptions))
 server.use(bodyParser.json())
+
+server.use(cookieParser());
 
 server.use('/static', express.static('public'))
 
