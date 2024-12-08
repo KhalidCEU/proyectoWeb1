@@ -8,7 +8,8 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
     _id: productData?._id || '',
     name: productData?.name || '',
     description: productData?.description || '',
-    rating: productData?.rating || 0,
+    ratings: productData?.ratings || [],
+    averageRating: productData?.averageRating || 0,
     imageUrl: productData?.imageUrl || '',
     isFavorite: productData?.isFavorite || false,
     estimatedPrice: {
@@ -48,13 +49,11 @@ const CreateProductModal = ({ open, handleClose, handleCreate, handleUpdate, pro
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault(); //evitar que refresque la pagina (default behaviour del form)
+    e.preventDefault(); // Evitar que refresque la pagina (default behaviour del form)
     if (formData._id) {
-      console.log("Form data id: ", formData._id)
-      console.log("Form data: ", formData)
-      handleUpdate(formData._id, formData); // LLama function update con datos del form
+      handleUpdate(formData._id, formData); // Llama function update con datos del form
     } else {
-      handleCreate(formData); // LLama function create
+      handleCreate(formData); // Llama function create
     }
   };
 

@@ -3,13 +3,15 @@ import 'dotenv/config';
 
 export function useAuthService() {
     const url = process.env.NEXT_PUBLIC_API_URL;
-    // console.log("Api url is: ", url);
 
     const login = async (username: string, password: string) => {
         try {
             const response = await axios.post(`${url}/auth/login`, {username, password},
                 { withCredentials: true }
             );
+
+            localStorage.setItem('userId', response.data.user._id);
+
             return response.data;
         } catch (error) {
             throw error;
