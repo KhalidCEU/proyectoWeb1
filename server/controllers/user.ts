@@ -55,6 +55,30 @@ export const updateUser: AsyncRequestHandler = async (req, res) => {
     }
 };
 
+export const deleteUser: AsyncRequestHandler = async (req, res) => {
+    const token = req.cookies;
+
+    try {
+       
+        const decode = jwt.verify(token.auth_token, process.env.JWT_SECRET as string);
+        const userId = decode.userId;
+
+       
+        const existingUser = await User.findById(userId);
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found", status: 'failure' });
+        }
+
+        
+        await User.findByIdAndDelete(userId);
+
+        res.status(200).json({ message: 'User deleted successfully', status: 'success' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Internal server error', status: 'failure' });
+    }
+};
 
 
 

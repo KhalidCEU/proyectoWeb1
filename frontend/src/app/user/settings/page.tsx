@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Button from '@mui/material/Button';
 import CustomTextField from '@/components/CustomTextField';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function UserSettings() {
     const [name, setName] = useState('');
@@ -14,6 +15,7 @@ export default function UserSettings() {
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [profileImage, setProfileImage] = useState('/static/unknown.jpg');
     const [errorMessage, setErrorMessage] = useState('');
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -80,6 +82,33 @@ export default function UserSettings() {
             toast.error('Error updating profile');
         }
     };
+
+    const handleDeleteAccount = async () => {
+        if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/api/user/profile', {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete account');
+            }
+
+            toast.success('Account deleted successfully!');
+            router.push('/'); 
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            toast.error('Error deleting account');
+        }
+    };
+
     return (
         <div className="container mx-auto min-h-screen flex flex-col">
             <div className="flex-grow">
@@ -123,7 +152,8 @@ export default function UserSettings() {
                     </Button>
 
                     <div className="w-full pt-8 mt-auto flex justify-center">
-                        <Button className="w-full max-w-md bg-red-500 text-white p-2 rounded-md mt-2">
+                        <Button className="w-full max-w-md bg-red-500 text-white p-2 rounded-md mt-2"
+                        onClick={handleDeleteAccount}>
                                 Delete Account
                         </Button>
                     </div>
