@@ -61,5 +61,13 @@ export function useProductsService() {
         }
     }
 
-    return { getProducts, getProductById, rateProduct, likeProduct, commentProduct };
+    const searchProducts = async (query: string) => {
+        const response = await fetch(`${url}/search?search=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            throw new Error("Error searching products");
+        }
+        return await response.json();
+    };
+
+    return { getProducts, getProductById, rateProduct, likeProduct, commentProduct, searchProducts};
 }
