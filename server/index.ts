@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 
 import router from './router';
 import connectDB from './config/database';
+import http from 'http';
+import { initSocket } from './config/sockets';
 
 import cookieParser from 'cookie-parser'
 const server = express()
@@ -22,11 +24,14 @@ server.use(bodyParser.json())
 
 server.use(cookieParser());
 
-server.use('/static', express.static('public'))
+const httpServer = http.createServer(server);
 
+const io = initSocket(httpServer);
+
+server.use('/static', express.static('public'))
 server.use('/api', router)
 
-server.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}/`)
 })
 
