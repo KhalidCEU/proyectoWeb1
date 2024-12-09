@@ -27,15 +27,15 @@ export default function Home() {
   }, [searchedWord, products]);
 
 
-const loadProducts = async () => {
-    try {
-        const response = await productsService.getProducts();
-        setProducts(response.items);
-    } catch (error: any) {
-        const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
-        toast.error(errorMessage);
-    }
-}
+  const loadProducts = async () => {
+      try {
+          const response = await productsService.getProducts();
+          setProducts(response.items);
+      } catch (error: any) {
+          const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+          toast.error(errorMessage);
+      }
+  }
 
   return (
     <div className="container mx-auto px-4 mt-32">
