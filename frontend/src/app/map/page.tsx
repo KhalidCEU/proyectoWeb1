@@ -18,14 +18,17 @@ export default function MapPage() {
     });
   }, []);
 
+  const initializedRef = useRef(false);
+
   useEffect(() => {
-    if (mapRef.current && !map) {
+    if (!initializedRef.current && mapRef.current && !map) {
       const initialMap = L.map(mapRef.current).setView([40.416775, -3.70379], 12);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
       }).addTo(initialMap);
 
       setMap(initialMap);
+      initializedRef.current = true;
     }
   }, [map]);
 
