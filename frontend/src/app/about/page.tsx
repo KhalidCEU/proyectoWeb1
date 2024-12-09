@@ -40,17 +40,13 @@ export default function About() {
 
                     <br/>
 
-<<<<<<< HEAD:frontend/src/app/about/page.tsx
+
                     <p className='mb-32'>
                         At SneakeRate, we believe that every sneaker purchase should be informed and satisfying. Join us in celebrating the culture of sneakers and
                         find your next favorite pair today! This text captures the essence of your application, highlighting its purpose, motivation, and offerings
                         in a clear and engaging manner. Feel free to adjust any sections to better fit your brand's voice or specific features!
                     </p>
-=======
-                    At SneakeRate, we believe that every sneaker purchase should be informed and satisfying. Join us in celebrating the culture of sneakers and
-                    find your next favorite pair today! This text captures the essence of your application, highlighting its purpose, motivation, and offerings
-                    in a clear and engaging manner. Feel free to adjust any sections to better fit your brand's voice or specific features!
->>>>>>> 734dcd3 (fix: restructure About page to avoid invalid HTML nesting):src/app/about/page.tsx
+
                 </div>
             </div>
         </div>
