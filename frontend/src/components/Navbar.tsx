@@ -27,6 +27,7 @@ const Navbar = () => {
                             <div className="ml-10 flex items-baseline space-x-4">
                                 <Link href="/about">About</Link>
                                 <Link href="/">Trending</Link>
+                                <Link href="/map">Go Shopping</Link>
                             </div>
                         </div>
                     </div>
