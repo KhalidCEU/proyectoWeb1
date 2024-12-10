@@ -17,23 +17,12 @@ export const initSocket = (httpServer: HTTPServer) => {
             connectedSockets.add(socket.id);
             const count = connectedSockets.size;
 
-            console.log('[Socket] New connection:', {
-                totalUsers: count,
-                socketId: socket.id,
-                allSockets: Array.from(connectedSockets)
-            });
-
             io.emit('userCount', count);
 
             socket.on('disconnect', () => {
                 connectedSockets.delete(socket.id);
                 const updatedCount = connectedSockets.size;
 
-                console.log('[Socket] Disconnection:', {
-                    totalUsers: updatedCount,
-                    socketId: socket.id,
-                    allSockets: Array.from(connectedSockets)
-                });
                 io.emit('userCount', updatedCount);
             });
         });
