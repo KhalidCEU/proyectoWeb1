@@ -23,7 +23,7 @@ export default function UserSettings() {
 
     const router = useRouter();
     const userService = useUserService();
-    
+
     const loadUserData = async () => {
         try {
             const response = await userService.getUserProfile();
@@ -39,7 +39,7 @@ export default function UserSettings() {
     useEffect(() => {
         loadUserData();
         console.log(userData);
-    }, []); 
+    }, []);
 
     const handleUpdateProfileClick = () => {
         if (password != confirmedPassword) {
@@ -58,12 +58,12 @@ export default function UserSettings() {
             toast.error(errorMessage);
         }
     };
-    
+
     const handleDeleteAccount = async () => {
         try {
             const response  = await userService.deleteUser();
             toast.success(response.message);
-            router.push('/'); 
+            router.push('/logout');
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
             toast.error(errorMessage);
@@ -124,5 +124,5 @@ export default function UserSettings() {
             </div>
         </div>
 )};
-   
+
 
