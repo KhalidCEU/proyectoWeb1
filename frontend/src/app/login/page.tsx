@@ -18,6 +18,19 @@ export default function LoginPage() {
   const authService = useAuthService();
   const router = useRouter();
 
+  const handleAuthRedirect = async () => {
+    if (selected === "login") {
+      router.push('/');
+    } else {
+      try {
+        await authService.login(username, password);
+        router.push('/');
+      } catch (error) {
+        toast.error('Auto-login after registration failed');
+      }
+    }
+  };
+
   const handleAuth = async () => {
     setIsLoading(true);
 
@@ -29,7 +42,7 @@ export default function LoginPage() {
       if (response.status === "success") {
         setIsLoading(false);
         toast.success(response.message);
-        router.push('/');
+        handleAuthRedirect()
       }
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
