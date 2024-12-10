@@ -24,6 +24,9 @@ const UserSidebar = () => {
           <li className="mb-2">
             <Link href="/user/settings" className={getLinkClass('/user/settings')}>Settings</Link>
           </li>
+          <li className="mb-2">
+            <Link href="/logout" className={getLinkClass('/logout')}>Logout</Link>
+          </li>
         </ul>
       </nav>
     </div>
