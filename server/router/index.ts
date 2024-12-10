@@ -4,6 +4,7 @@ import productsRouter from './products';
 import userRouter from './user';
 import imagesRouter from './images';
 import wishlistRouter from './wishlist';
+import searchProducts from './products';
 
 const router = express.Router()
 
@@ -13,5 +14,6 @@ router.use('/user', userRouter);
 router.use('/images', imagesRouter);
 router.use('/wishlist', wishlistRouter);
 
+router.get('/search', searchProducts);
 
 export default router;

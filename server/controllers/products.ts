@@ -84,6 +84,36 @@ export const createProduct: AsyncRequestHandler = async (req, res) => {
     }
 }
 
+export const searchProducts: AsyncRequestHandler = async (req, res) => {
+    try {
+        const { search } = req.query;
+
+        if (!search || typeof search !== "string") {
+            return res.status(400).json({ message: "Search query is required.", status: "failure" });
+        }
+
+        const products = await Product.find({
+            name: { $regex: search, $options: "i" }, // Insensible to cap letters
+        });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found.", status: "failure" });
+        }
+
+        return res.status(200).json({
+            items: products,
+            message: "Products retrieved successfully",
+            status: "success",
+        });
+    } catch (error) {
+        console.error("Error during product search:", error);
+        return res
+            .status(500)
+            .json({ message: "Error searching products.", status: "failure" });
+    }
+};
+
+
 export const rateProduct: AsyncRequestHandler = async (req, res) => {
     const { productId } = req.params;
     const { userId, rating } = req.body;

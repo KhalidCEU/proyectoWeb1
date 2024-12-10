@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+    searchProducts,
     createProduct,
     updateProduct,
     rateProduct,
@@ -11,6 +12,8 @@ import {
 } from '../controllers/products';
 
 const productsRouter = express.Router();
+
+productsRouter.get('/search', searchProducts);
 
 productsRouter.get('/', getProducts);
 productsRouter.get('/:productId', getProduct);
