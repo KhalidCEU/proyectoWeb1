@@ -40,11 +40,13 @@ export default function About() {
 
                     <br/>
 
+
                     <p className='mb-32'>
                         At SneakeRate, we believe that every sneaker purchase should be informed and satisfying. Join us in celebrating the culture of sneakers and
                         find your next favorite pair today! This text captures the essence of your application, highlighting its purpose, motivation, and offerings
                         in a clear and engaging manner. Feel free to adjust any sections to better fit your brand's voice or specific features!
                     </p>
+
                 </div>
             </div>
         </div>

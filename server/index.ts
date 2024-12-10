@@ -7,6 +7,7 @@ import router from './router';
 import connectDB from './config/database';
 import http from 'http';
 import { initSocket } from './config/sockets';
+
 const server = express()
 const port = process.env.PORT || 8080
 
