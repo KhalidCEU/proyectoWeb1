@@ -13,12 +13,9 @@ export default function Home() {
   const[filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const[searchedWord, setSearchedWord] = useState('');
   const[sortOrder, setSortOrder] = useState('default');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const productsService = useProductsService();
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
 
   const sortProducts = (products: Product[], order: string) => {
     return [...products].sort((a, b) => {
@@ -29,12 +26,26 @@ export default function Home() {
   };
 
   useEffect(() => {
+    loadProducts();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('search') || '';
+    setSearchQuery(query);
+  }, [window.location.search]);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredProducts(products);
+      return;
+    }
     const filtered = products?.filter((item) =>
-      item.name.toLowerCase().includes(searchedWord.toLowerCase())
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     const sorted = sortProducts(filtered, sortOrder);
     setFilteredProducts(sorted);
-  }, [searchedWord, products, sortOrder]);
+  }, [searchQuery, products, sortOrder]);
 
 
   const loadProducts = async () => {
