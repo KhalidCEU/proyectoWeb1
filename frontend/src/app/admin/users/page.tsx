@@ -32,10 +32,10 @@ export default function AdminUsers() {
 
     return (
         <div>
-            <span className="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
-            <span className="flex w-2.5 h-2.5 bg-green-500 rounded-full me-1.5 flex-shrink-0"></span>
+            <div className="flex flex-row items-center ml-20 mb-5">
+                <span className="flex w-2.5 h-2.5 bg-green-500 rounded-full me-1.5 flex-shrink-0"></span>
                 {connectedUsers} Users Online
-            </span>
+            </div>
             <div className="mb-10">
                 <SearchBar onSearch={handleSearch}/>
             </div>
