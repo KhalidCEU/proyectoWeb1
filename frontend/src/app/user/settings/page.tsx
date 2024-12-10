@@ -3,109 +3,70 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import CustomTextField from '@/components/CustomTextField';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useUserService } from '@/services';
+import { UserData } from "@/app/types/User";
 
 export default function UserSettings() {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [profileImage, setProfileImage] = useState('/static/unknown.jpg');
     const [errorMessage, setErrorMessage] = useState('');
+    const [userData, setUserData] = useState<UserData>({
+        name: '',
+        username: '',
+        imageUrl: '',
+    });
+
     const router = useRouter();
-
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-
-                const response = await fetch('http://localhost:8080/api/user/profile', {
-                    method: 'GET', 
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                        
-                    },
-                    
-                });
+    const userService = useUserService();
     
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-    
-                const data = await response.json();
-
-                //console.log('Fetched user data:', data); 
-                
-                setName(data.name || ''); 
-                setUsername(data.username || ''); 
-                setProfileImage(data.imageURL || '/elon.png');
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
-    
-        fetchUserData();
-    }, []); 
-
-    const handleUpdateProfile = async () => {
-        if (password !== confirmedPassword) {
-            toast.error("Passwords don't match");
-            return;
-        }
-
+    const loadUserData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/user/profile', {
-                method: 'PUT',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    username,
-                    password,
-                }),
-            });
+            const response = await userService.getUserProfile();
+            setUserData(response.items);
+            toast.success(response.message);
 
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
-            }
-
-            
-            toast.success('Profile updated successfully!');
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            toast.error('Error updating profile');
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
         }
     };
 
-    const handleDeleteAccount = async () => {
-        if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-            return;
+    useEffect(() => {
+        loadUserData();
+        console.log(userData);
+    }, []); 
+
+    const handleUpdateProfileClick = () => {
+        if (password != confirmedPassword) {
+            toast.error('Passwords must match');
+        } else {
+            handleUpdateProfile(userData.name, userData.username, password);
         }
+    };
 
+    const handleUpdateProfile = async (name: string, username: string, password: string) => {
         try {
-            const response = await fetch('http://localhost:8080/api/user/profile', {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to delete account');
-            }
-
-            toast.success('Account deleted successfully!');
+            const response = await userService.updateUserProfile(name, username, password);
+            toast.success(response.message);
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
+        }
+    };
+    
+    const handleDeleteAccount = async () => {
+        try {
+            const response  = await userService.deleteUser();
+            toast.success(response.message);
             router.push('/'); 
-        } catch (error) {
-            console.error('Error deleting account:', error);
-            toast.error('Error deleting account');
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
+            toast.error(errorMessage);
         }
     };
 
@@ -124,13 +85,13 @@ export default function UserSettings() {
                     </div>
 
                     <CustomTextField label="Name" placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={userData.name || ''}
+                        onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))}
                     />
 
                     <CustomTextField label="Username" placeholder="@johndoe"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={userData.username || ''}
+                        onChange={(e) => setUserData(prev => ({ ...prev, username: e.target.value }))}
                     />
                     <CustomTextField label="Password" placeholder="*********"
                         value={password}
@@ -143,17 +104,19 @@ export default function UserSettings() {
                         isPassword
                     />
 
-                    {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
-
-
-                    <Button className="w-1/2 bg-black text-white p-2 rounded-md mt-4"
-                    onClick={handleUpdateProfile}>
+                    <Button
+                        className="w-1/2 bg-black text-white p-2 rounded-md mt-4"
+                        onClick={handleUpdateProfileClick}
+                    >
                         Update Profile
                     </Button>
 
                     <div className="w-full pt-8 mt-auto flex justify-center">
-                        <Button className="w-full max-w-md bg-red-500 text-white p-2 rounded-md mt-2"
-                        onClick={handleDeleteAccount}>
+
+                        <Button
+                            className="w-full max-w-md bg-red-500 text-white p-2 rounded-md mt-2"
+                            onClick={handleDeleteAccount}
+                        >
                                 Delete Account
                         </Button>
                     </div>
