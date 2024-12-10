@@ -1,20 +1,14 @@
 import 'dotenv';
 import { User } from '../schemas/user';
 import { AsyncRequestHandler } from '../types/requests';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { getDecodedToken } from "../utils/jwtUtils";
 
 export const getUser: AsyncRequestHandler = async (req, res) => {
-    const token = req.cookies;
-    //console.log(token);
+    const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+    const userId = decodedAuthToken?.userId;
 
-    const decodedToken = jwt.verify(token.auth_token, process.env.JWT_SECRET as string);
-    const userId = decodedToken.userId;
-    //console.log(decode.userId);
-    
     const user = await User.findOne({ _id: userId });
-
-    //console.log(user);
 
     return res
         .status(200)
@@ -22,11 +16,13 @@ export const getUser: AsyncRequestHandler = async (req, res) => {
             items: user,
             message: 'User data fetched succesfully.',
             status: 'success'
-        }) 
+        })
 };
 
 export const updateUser: AsyncRequestHandler = async (req, res) => {
-    const token = req.cookies;
+    const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+    const userId = decodedAuthToken?.userId;
+
     const { name, username, password } = req.body;
 
     if (!username || !password) {
@@ -36,13 +32,16 @@ export const updateUser: AsyncRequestHandler = async (req, res) => {
     }
 
     try {
-        const decode = jwt.verify(token.auth_token, process.env.JWT_SECRET as string);
-        const userId = decode.userId;
+        if (!userId) {
+            return res
+                .status(401)
+                .json({ message: "You must be authenticated to update your profile", status: 'failure'})
+        }
 
         const newPassword = await bcrypt.hash(password, 10);
 
         const updatedUser = await User.findByIdAndUpdate(
-            userId, 
+            userId,
             { name, username, newPassword },
             { new: true }
         );
@@ -58,13 +57,17 @@ export const updateUser: AsyncRequestHandler = async (req, res) => {
 };
 
 export const deleteUser: AsyncRequestHandler = async (req, res) => {
-    const token = req.cookies;
+    const decodedAuthToken = getDecodedToken(req.headers.cookie || "");
+    const userId = decodedAuthToken?.userId;
 
     try {
-       
-        const decode = jwt.verify(token.auth_token, process.env.JWT_SECRET as string);
-        const userId = decode.userId;
-       
+
+        if (!userId) {
+            return res
+                .status(401)
+                .json({ message: "You must be authenticated to update your profile", status: 'failure'})
+        }
+
         const existingUser = await User.findById(userId);
 
         if (!existingUser) {
@@ -72,7 +75,7 @@ export const deleteUser: AsyncRequestHandler = async (req, res) => {
                 .status(404)
                 .json({ message: "User not found", status: 'failure' });
         }
-        
+
         await User.findByIdAndDelete(userId);
 
         return res
