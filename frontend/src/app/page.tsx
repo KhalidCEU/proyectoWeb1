@@ -10,8 +10,9 @@ import { useProductsService } from '@/services';
 
 export default function Home() {
   const[products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const[filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const[searchedWord, setSearchedWord] = useState('');
+  const[sortOrder, setSortOrder] = useState('default');
 
   const productsService = useProductsService();
 
@@ -19,12 +20,21 @@ export default function Home() {
     loadProducts();
   }, []);
 
+  const sortProducts = (products: Product[], order: string) => {
+    return [...products].sort((a, b) => {
+      if (order === 'highest') return b.averageRating - a.averageRating;
+      if (order === 'lowest') return a.averageRating - b.averageRating;
+      return 0;
+    });
+  };
+
   useEffect(() => {
     const filtered = products?.filter((item) =>
-        item.name.toLowerCase().includes(searchedWord.toLowerCase())
+      item.name.toLowerCase().includes(searchedWord.toLowerCase())
     );
-    setFilteredProducts(filtered);
-  }, [searchedWord, products]);
+    const sorted = sortProducts(filtered, sortOrder);
+    setFilteredProducts(sorted);
+  }, [searchedWord, products, sortOrder]);
 
 
   const loadProducts = async () => {
@@ -40,6 +50,17 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 mt-32">
       <h3 className="text-center text-2xl font-bold mb-20">Featured Items</h3>
+        <div className="flex justify-end items-center mb-4">
+          <select
+            className="w-48 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+          >
+            <option value="default">Sort by Rating</option>
+            <option value="highest">Highest Rated</option>
+            <option value="lowest">Lowest Rated</option>
+          </select>
+        </div>
         {filteredProducts.length === 0 ? (
           <div className="flex justify-center h-screen">
               <p className="text-center text-lg text-gray-500 italic">There are currently no items available.</p>
