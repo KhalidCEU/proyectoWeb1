@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
+import { SocketTracker } from "@/components/SocketTracker";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SocketTracker />
         <Navbar />
         <Toaster richColors/>
         <main className="pt-20">
